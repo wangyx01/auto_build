@@ -1,0 +1,24 @@
+FROM nvidia/cuda:10.1-devel-ubuntu18.04
+
+COPY ./start /opt
+
+RUN apt-get --allow-unauthenticated=true update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget \
+    r-base-dev \
+    automake \
+    autoconf \
+    libtool \
+    cmake \
+    gcc \
+    g++
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
+    bash /opt/miniconda.sh -b -p /opt/miniconda && \
+    export PATH="/opt/miniconda/bin:$PATH" && \
+    conda create -v -y -n py36 python=3.6 && \
+    conda install -v -y -n py36 tensorflow-gpu~=2.1 r r-essentials jupyter matplotlib pandas scikit-learn notebook && \
+    chmod 777 /opt/start && \
+    chmod 777 -R /opt/miniconda
+
+ENV PATH /opt/miniconda/bin:$PATH
+ENV IMAGE_CONDA_ENV py36
+
+ENTRYPOINT ["/opt/start"]

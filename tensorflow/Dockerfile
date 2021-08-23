@@ -1,8 +1,6 @@
-# Copyright 2018-present Lenovo
+# Copyright 2019-present Lenovo
 # Confidential and Proprietary
 
-Bootstrap: docker
-From: nvcr.io/nvidia/tensorflow:20.08-tf1-py3
+FROM   nvcr.io/nvidia/tensorflow:21.02-tf2-py3
 
-%post
-    pip --default-timeout=100 install -U scikit-learn
+RUN    pip --default-timeout=100 install scikit-learn==0.20.4
